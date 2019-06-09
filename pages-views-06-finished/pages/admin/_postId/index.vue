@@ -1,30 +1,37 @@
 <template>
   <div class="admin-post-page">
     <section class="update-form">
-      <AdminPostForm :post="loadedPost" />
+      <AdminPostForm :post="loadedPost" @submit="onSubmitted"/>
     </section>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import AdminPostForm from '@/components/Admin/AdminPostForm'
 export default {
   layout: 'admin',
   components: {
     AdminPostForm
   },
-  data() {
-    return {
-      loadedPost: {
-        author: 'Macimilian',
-        title: 'My awesome Post',
-        content: 'Super amazing, thanks for that!',
-        thumbnailLink: 'https://pics.prcm.jp/bunny213qp/77913917/jpeg/77913917_220x264.jpeg'
-      }
-    }
+  asyncData(context) {
+    return axios
+      .get(
+        'https://pages-views-06-finished.firebaseio.com/posts/' + 
+          context.params.postId + 
+          '.json'
+      )
+      .then(res => {
+        return {
+          loadedPost: res.data
+        }
+      })
+      .catch(e => context.error());
   }
 }
 </script>
+// return axios　＝axiosでやったことを返す
+// 上のaxiosを返す、そのためのreturn
 
 <style scoped>
 .update-form {
