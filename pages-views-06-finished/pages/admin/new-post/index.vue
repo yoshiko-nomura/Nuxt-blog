@@ -16,13 +16,9 @@ export default {
   },
   methods: {
     onSubmitted(postsData) {
-      axios
-        .post('https://pages-views-06-finished.firebaseio.com/posts.json', 
-          {...postsData, 
-          updatedData: new Date()
-          })
-        .then(result => console.log(result))
-        .catch(e => console.log(e))
+      this.$store.dispatch('addPost', postsData).then(() => {
+        this.$router.push('/admin');
+      })
     }
   }
 }
