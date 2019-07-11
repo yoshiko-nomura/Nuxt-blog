@@ -1,4 +1,5 @@
 const pkg = require('./package')
+const bodyParser = require('body-parser')
 
 module.exports = {
   mode: 'universal',
@@ -22,7 +23,7 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#f00', height: '4px', duration: 5000 },
+  loading: { color: '#0f0', height: '4px', duration: 5000 },
   loadingIndicator: {
     name: 'circle',
     color: '#fa923f'
@@ -47,7 +48,12 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/axios',
   ],
+  axios: {
+    baseURL: process.env.BASE_URL || 'https://pages-views-06-finished.firebaseio.com',
+    credentials: false
+  },
 
   /*
   ** Build configuration
@@ -61,7 +67,8 @@ module.exports = {
     }
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'https://pages-views-06-finished.firebaseio.com'
+    baseUrl: process.env.BASE_URL || 'https://pages-views-06-finished.firebaseio.com',
+    fbAPIKey: 'AIzaSyAMpcHZtnEP5PXV-7i54TgRsh-DmDxI6CY'
   },
   // router: {
   //   linkActiveClass: 'active'
@@ -69,5 +76,12 @@ module.exports = {
   transition: {
     name: 'fade',
     mode: 'out-in'
-  }
+  },
+  // router: {
+  //   middleware: 'log'
+  // }
+  serverMiddleware: [
+    bodyParser.json(),
+    '~/api'
+  ]
 }
